@@ -67,7 +67,7 @@ function createCard() {
         document.getElementById('description').value = '';
 
         alert('Card created successfully!');
-        showCardList(); // Automatically show the updated card list
+        showCreateCard(); // Automatically show the updated card list
     } else {
         alert('Chinese word and pinyin are required!');
     }
