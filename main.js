@@ -50,28 +50,59 @@ function showCardList() {
 }
 
 function createCard() {
-    const chineseWord = document.getElementById('chineseWord').value;
-    const pinyin = document.getElementById('pinyin').value;
-    const description = document.getElementById('description').value;
+    const chineseWord = document.getElementById('chineseWord').value.trim();
+    const pinyin = document.getElementById('pinyin').value.trim();
+    const description = document.getElementById('description').value.trim();
 
-    if (chineseWord && pinyin) {
-        const card = { chineseWord, pinyin, description };
-        cards.push(card);
-        
-        // Save to local storage
-        localStorage.setItem('chineseCards', JSON.stringify(cards));
-
-        // Clear input fields
-        document.getElementById('chineseWord').value = '';
-        document.getElementById('pinyin').value = '';
-        document.getElementById('description').value = '';
-
-        alert('Card created successfully!');
-        showCreateCard(); // Automatically show the updated card list
-    } else {
+    // Check if all required fields are filled
+    if (!chineseWord || !pinyin) {
         alert('Chinese word and pinyin are required!');
+        return;
     }
+
+    // Retrieve existing cards from localStorage
+    let cards = JSON.parse(localStorage.getItem('chineseCards')) || [];
+
+    // Check if the Chinese word already exists
+    const isDuplicate = cards.some(card => card.chineseWord.toLowerCase() === chineseWord.toLowerCase());
+
+    if (isDuplicate) {
+        // Show a confirmation dialog
+        const confirmOverwrite = confirm(`The Chinese word "${chineseWord}" already exists. Do you want to add another card?`);
+        
+        if (!confirmOverwrite) {
+            return; // Exit the function if user doesn't want to proceed
+        }
+    }
+    else {
+
+    // Create the new card
+    const card = { 
+        chineseWord, 
+        pinyin, 
+        description,
+    };
+
+    // Add the new card to the array
+    cards.push(card);
+    
+    // Save to local storage
+    localStorage.setItem('chineseCards', JSON.stringify(cards));
+
+    // Clear input fields
+    document.getElementById('chineseWord').value = '';
+    document.getElementById('pinyin').value = '';
+    document.getElementById('description').value = '';
+
+    // Show success message
+    alert('Card created successfully!');
+    }
+
+
+    // Automatically show the updated card list
+    showCreateCard();
 }
+
 
 function openEditModal(index) {
     const card = cards[index];
