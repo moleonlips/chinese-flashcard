@@ -19,6 +19,9 @@ function showCreateCard() {
 }
 
 function showCardList() {
+    let txtBtnViewcard = document.getElementById("btnViewcard");
+    txtBtnViewcard.innerText += " (loading...)"
+    
     document.getElementById('createCardSection').style.display = 'none';
     document.getElementById('practiceSection').style.display = 'none';
     document.getElementById('cardListSection').style.display = 'block';
@@ -27,26 +30,31 @@ function showCardList() {
     const tableBody = document.getElementById('cardTableBody');
     tableBody.innerHTML = ''; // Clear existing rows
 
-    cards.forEach((card, index) => {
-        const row = tableBody.insertRow();
-        row.insertCell(0).textContent = card.chineseWord;
-        row.insertCell(1).textContent = card.pinyin;
-        row.insertCell(2).textContent = card.description;
+    setTimeout(() => {
+        cards.forEach((card, index) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = card.chineseWord;
+            row.insertCell(1).textContent = card.pinyin;
+            row.insertCell(2).textContent = card.description;
+            
+            const actionsCell = row.insertCell(3);
+            actionsCell.className = 'card-actions';
+            
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.onclick = () => openEditModal(index);
+            
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => deleteCard(index);
+            
+            actionsCell.appendChild(editButton);
+            actionsCell.appendChild(deleteButton);
+        });
         
-        const actionsCell = row.insertCell(3);
-        actionsCell.className = 'card-actions';
-        
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.onclick = () => openEditModal(index);
-        
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = () => deleteCard(index);
-        
-        actionsCell.appendChild(editButton);
-        actionsCell.appendChild(deleteButton);
-    });
+        txtBtnViewcard.innerText = 'View Cards'
+    }, 4500);
+
 }
 
 function createCard() {
