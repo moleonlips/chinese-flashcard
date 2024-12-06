@@ -19,41 +19,37 @@ function showCreateCard() {
 }
 
 function showCardList() {
-    let txtBtnViewcard = document.getElementById("btnViewcard");
-    txtBtnViewcard.innerText += " (loading...)"
-    
+
     document.getElementById('createCardSection').style.display = 'none';
     document.getElementById('practiceSection').style.display = 'none';
     document.getElementById('cardListSection').style.display = 'block';
-    
+
     // Populate card list
     const tableBody = document.getElementById('cardTableBody');
     tableBody.innerHTML = ''; // Clear existing rows
 
-    setTimeout(() => {
-        cards.forEach((card, index) => {
-            const row = tableBody.insertRow();
-            row.insertCell(0).textContent = card.chineseWord;
-            row.insertCell(1).textContent = card.pinyin;
-            row.insertCell(2).textContent = card.description;
-            
-            const actionsCell = row.insertCell(3);
-            actionsCell.className = 'card-actions';
-            
-            const editButton = document.createElement('button');
-            editButton.textContent = 'Edit';
-            editButton.onclick = () => openEditModal(index);
-            
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
-            deleteButton.onclick = () => deleteCard(index);
-            
-            actionsCell.appendChild(editButton);
-            actionsCell.appendChild(deleteButton);
-        });
-        
-        txtBtnViewcard.innerText = 'View Cards'
-    }, 4500);
+    let cards = JSON.parse(localStorage.getItem('chineseCards')) || [];
+
+    cards.forEach((card, index) => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = card.chineseWord;
+        row.insertCell(1).textContent = card.pinyin;
+        row.insertCell(2).textContent = card.description;
+
+        const actionsCell = row.insertCell(3);
+        actionsCell.className = 'card-actions';
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.onclick = () => openEditModal(index);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => deleteCard(index);
+
+        actionsCell.appendChild(editButton);
+        actionsCell.appendChild(deleteButton);
+    });
 
 }
 
@@ -77,33 +73,33 @@ function createCard() {
     if (isDuplicate) {
         // Show a confirmation dialog
         const confirmOverwrite = confirm(`The Chinese word "${chineseWord}" already exists. Do you want to add another card?`);
-        
+
         if (!confirmOverwrite) {
             return; // Exit the function if user doesn't want to proceed
         }
     }
     else {
 
-    // Create the new card
-    const card = { 
-        chineseWord, 
-        pinyin, 
-        description,
-    };
+        // Create the new card
+        const card = {
+            chineseWord,
+            pinyin,
+            description,
+        };
 
-    // Add the new card to the array
-    cards.push(card);
-    
-    // Save to local storage
-    localStorage.setItem('chineseCards', JSON.stringify(cards));
+        // Add the new card to the array
+        cards.push(card);
 
-    // Clear input fields
-    document.getElementById('chineseWord').value = '';
-    document.getElementById('pinyin').value = '';
-    document.getElementById('description').value = '';
+        // Save to local storage
+        localStorage.setItem('chineseCards', JSON.stringify(cards));
 
-    // Show success message
-    alert('Card created successfully!');
+        // Clear input fields
+        document.getElementById('chineseWord').value = '';
+        document.getElementById('pinyin').value = '';
+        document.getElementById('description').value = '';
+
+        // Show success message
+        alert('Card created successfully!');
     }
 
 
@@ -113,6 +109,7 @@ function createCard() {
 
 
 function openEditModal(index) {
+
     const card = cards[index];
     editingCardIndex = index;
 
@@ -186,6 +183,9 @@ function startPractice() {
 }
 
 function displayCurrentCard() {
+    const hintMessage = document.getElementById('hintMessage');
+    hintMessage.innerHTML = '';
+    
     if (practiceCards.length === 0) {
         // Reshuffle and restart when all cards have been practiced
         practiceCards = shuffleArray([...cards]);
@@ -196,10 +196,16 @@ function displayCurrentCard() {
     document.getElementById('currentChineseWord').textContent = card.chineseWord;
     document.getElementById('pinyinInput').value = '';
     document.getElementById('resultMessage').textContent = '';
-    
+
     // Update card progress
-    document.getElementById('cardProgress').textContent = 
+    document.getElementById('cardProgress').textContent =
         `Card ${currentCardIndex + 1} of ${cards.length}`;
+}
+
+function hintDesc() {
+    const correctDesc = practiceCards[currentCardIndex].description.toLowerCase();
+    const hintMessage = document.getElementById('hintMessage');
+    hintMessage.innerHTML = correctDesc;
 }
 
 function checkPinyin() {
@@ -210,10 +216,10 @@ function checkPinyin() {
     if (inputPinyin === correctPinyin) {
         resultMessage.textContent = 'Correct! Next card.';
         resultMessage.className = 'correct-message';
-        
+
         // Remove the current card from practice cards
         practiceCards.splice(currentCardIndex, 1);
-        
+
         // Adjust index if necessary
         if (currentCardIndex >= practiceCards.length) {
             currentCardIndex = 0;
