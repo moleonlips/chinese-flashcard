@@ -28,7 +28,7 @@ function showCardList() {
     const tableBody = document.getElementById('cardTableBody');
     tableBody.innerHTML = ''; // Clear existing rows
 
-    cards = localStorage.getItem('chineseCards')? JSON.parse(localStorage.getItem('chineseCards')) : [];
+    cards = localStorage.getItem('chineseCards') ? JSON.parse(localStorage.getItem('chineseCards')) : [];
 
     cards.forEach((card, index) => {
         const row = tableBody.insertRow();
@@ -65,7 +65,7 @@ function createCard() {
     }
 
     // Retrieve existing cards from localStorage
-    cards = localStorage.getItem('chineseCards')? JSON.parse(localStorage.getItem('chineseCards')) : [];
+    cards = localStorage.getItem('chineseCards') ? JSON.parse(localStorage.getItem('chineseCards')) : [];
 
     // Check if the Chinese word already exists
     const isDuplicate = cards.some(card => card.chineseWord.toLowerCase() === chineseWord.toLowerCase());
@@ -166,7 +166,7 @@ function shuffleArray(array) {
 }
 
 function startPractice() {
-    cards = localStorage.getItem('chineseCards')? JSON.parse(localStorage.getItem('chineseCards')) : [];
+    cards = localStorage.getItem('chineseCards') ? JSON.parse(localStorage.getItem('chineseCards')) : [];
 
     if (cards.length === 0) {
         alert('Please create some cards first!');
@@ -187,7 +187,6 @@ function startPractice() {
 function displayCurrentCard() {
     const hintMessage = document.getElementById('hintMessage');
     hintMessage.innerHTML = '';
-    let progress = 1
 
     if (practiceCards.length === 0) {
         // Reshuffle and restart when all cards have been practiced
@@ -201,9 +200,8 @@ function displayCurrentCard() {
     document.getElementById('resultMessage').textContent = '';
 
     // Update card progress
-    document.getElementById('cardProgress').textContent =
-        `Card ${currentCardIndex + progress} of ${cards.length}`;
-        progress++;
+    document.getElementById('cardProgress').textContent = 
+        `Card ${cards.length - practiceCards.length + 1} of ${cards.length}`;
 }
 
 function hintDesc() {
