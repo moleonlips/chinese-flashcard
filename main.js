@@ -216,7 +216,10 @@ function checkPinyin() {
     const resultMessage = document.getElementById('resultMessage');
 
     if (inputPinyin === correctPinyin) {
-        resultMessage.textContent = 'Correct! Next card.';
+
+        console.log(`p: ${practiceCards.length}\nc: ${cards.length}`);
+        
+        resultMessage.innerHTML = practiceCards.length === 1? `<h1>WELL DONE</h1><img width="20%" src="/asset/beautiful-flower.webp" alt="">`: 'Correct! Next card.';
         resultMessage.className = 'correct-message';
 
         // Remove the current card from practice cards
@@ -228,7 +231,7 @@ function checkPinyin() {
         }
 
         // Show next card or reshuffle
-        setTimeout(displayCurrentCard, 1000);
+        setTimeout(displayCurrentCard, practiceCards.length === 0? 5000: 1000);
     } else {
         resultMessage.textContent = 'Incorrect. Try again!';
         resultMessage.className = 'incorrect-message';
