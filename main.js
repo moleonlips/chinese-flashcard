@@ -4,6 +4,8 @@ let currentCardIndex = -1;
 let practiceCards = [];
 let editingCardIndex = -1;
 
+const beautifulFlower = document.getElementById('gif');
+
 // Load cards from local storage on page load
 document.addEventListener('DOMContentLoaded', () => {
     const storedCards = localStorage.getItem('chineseCards');
@@ -187,6 +189,7 @@ function startPractice() {
 function displayCurrentCard() {
     const hintMessage = document.getElementById('hintMessage');
     hintMessage.innerHTML = '';
+    beautifulFlower.style.display = 'none';
 
     if (practiceCards.length === 0) {
         // Reshuffle and restart when all cards have been practiced
@@ -218,8 +221,14 @@ function checkPinyin() {
     if (inputPinyin === correctPinyin) {
 
         console.log(`p: ${practiceCards.length}\nc: ${cards.length}`);
+
+        if (practiceCards.length === 1) {
+            resultMessage.innerHTML = `<h1>WELL DONE</h1>`;
+            beautifulFlower.style.display = 'block';
+        }else {
+            resultMessage.innerHTML = `Correct! Next card.`;
+        }
         
-        resultMessage.innerHTML = practiceCards.length === 1? `<h1>WELL DONE</h1><img width="20%" src="/asset/beautiful-flower.webp" alt="">`: 'Correct! Next card.';
         resultMessage.className = 'correct-message';
 
         // Remove the current card from practice cards
@@ -231,7 +240,7 @@ function checkPinyin() {
         }
 
         // Show next card or reshuffle
-        setTimeout(displayCurrentCard, practiceCards.length === 0? 5000: 1000);
+        setTimeout(displayCurrentCard, practiceCards.length === 0? 10000: 1000);
     } else {
         resultMessage.textContent = 'Incorrect. Try again!';
         resultMessage.className = 'incorrect-message';
