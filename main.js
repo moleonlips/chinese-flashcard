@@ -28,7 +28,7 @@ function showCardList() {
     const tableBody = document.getElementById('cardTableBody');
     tableBody.innerHTML = ''; // Clear existing rows
 
-    let cards = JSON.parse(localStorage.getItem('chineseCards')) || [];
+    cards = JSON.parse(localStorage.getItem('chineseCards')) || [];
 
     cards.forEach((card, index) => {
         const row = tableBody.insertRow();
@@ -65,7 +65,7 @@ function createCard() {
     }
 
     // Retrieve existing cards from localStorage
-    let cards = JSON.parse(localStorage.getItem('chineseCards')) || [];
+    cards = JSON.parse(localStorage.getItem('chineseCards')) || [];
 
     // Check if the Chinese word already exists
     const isDuplicate = cards.some(card => card.chineseWord.toLowerCase() === chineseWord.toLowerCase());
@@ -185,7 +185,7 @@ function startPractice() {
 function displayCurrentCard() {
     const hintMessage = document.getElementById('hintMessage');
     hintMessage.innerHTML = '';
-    
+
     if (practiceCards.length === 0) {
         // Reshuffle and restart when all cards have been practiced
         practiceCards = shuffleArray([...cards]);
