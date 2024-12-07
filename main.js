@@ -219,9 +219,6 @@ function checkPinyin() {
     const resultMessage = document.getElementById('resultMessage');
 
     if (inputPinyin === correctPinyin) {
-
-        console.log(`p: ${practiceCards.length}\nc: ${cards.length}`);
-
         if (practiceCards.length === 1) {
             resultMessage.innerHTML = `<h1>WELL DONE</h1>`;
             beautifulFlower.style.display = 'block';
