@@ -205,12 +205,15 @@ function displayCurrentCard() {
     // Update card progress
     document.getElementById('cardProgress').textContent = 
         `Card ${cards.length - practiceCards.length + 1} of ${cards.length}`;
+
+        document.getElementById('pinyinInput').focus();
 }
 
 function hintDesc() {
     const correctDesc = practiceCards[currentCardIndex].description.toLowerCase();
     const hintMessage = document.getElementById('hintMessage');
     hintMessage.innerHTML = correctDesc;
+    document.getElementById('pinyinInput').focus();
 }
 
 function checkPinyin() {
@@ -241,5 +244,6 @@ function checkPinyin() {
     } else {
         resultMessage.textContent = 'Incorrect. Try again!';
         resultMessage.className = 'incorrect-message';
+        document.getElementById('pinyinInput').focus();
     }
 }
