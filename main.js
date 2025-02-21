@@ -247,3 +247,5 @@ function checkPinyin() {
         document.getElementById('pinyinInput').focus();
     }
 }
+
+
